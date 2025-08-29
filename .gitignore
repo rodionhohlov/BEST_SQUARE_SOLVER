@@ -1,0 +1,6 @@
+html
+latex
+*.exe
+*.log
+*.dmp
+*.save
