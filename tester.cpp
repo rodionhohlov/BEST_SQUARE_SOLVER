@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
+#include <stdlib.h>
 
 #include "tester.h"
 #include "solver.h"
@@ -9,25 +10,45 @@
 #include "math_operations.h"
 
 void master_test(void) {
-    struct UnitTest test_all_cases[] = {
-        {{.a = 1,  .b = 0,  .c = -1}, {.x1 = 1,   .x2 = -1,  .ans = TWO_ROOTS}},
-        {{.a = 0,  .b = 1,  .c = 0},  {.x1 = 0,   .x2 = NAN, .ans = ONE_ROOT}},
-        {{.a = 1,  .b = 0,  .c = 1},  {.x1 = NAN, .x2 = NAN, .ans = NO_ROOTS}},
-        {{.a = 0,  .b = 0,  .c = 1},  {.x1 = NAN, .x2 = NAN, .ans = NO_ROOTS}},
-        {{.a = 0,  .b = 0,  .c = 0},  {.x1 = NAN, .x2 = NAN, .ans = INF_ROOTS}},
-        {{.a = 1,  .b = 0,  .c = 0},  {.x1 = 0,   .x2 = NAN, .ans = ONE_ROOT}},
-        {{.a = -1, .b = 0,  .c = 0},  {.x1 = 0,   .x2 = NAN, .ans = ONE_ROOT}},
-        {{.a = 1,  .b = 2,  .c = 0},  {.x1 = 0,   .x2 = -2,  .ans = TWO_ROOTS}},
-        {{.a = 1,  .b = 2,  .c = -3}, {.x1 = 1,   .x2 = -3,  .ans = TWO_ROOTS}}
-    };
+    UnitTest *test_all_cases = (UnitTest*)calloc(9, sizeof(UnitTest));
 
-    size_t length = sizeof(test_all_cases) / sizeof(test_all_cases[0]);
+    FILE *reader = fopen("tests.txt", "r");
 
-    for (size_t i = 0; i < length; i++)
-        unit_test(test_all_cases+i);
+    if (reader == NULL) {
+        printf("ощибка открытия");
+        return;
+    }
+
+    char str[200];
+
+    int i = 0;
+
+    while (fgets(str, 200, reader) != NULL) {
+
+
+        sscanf(str, "%lg %lg %lg %lg %lg %d",     &((test_all_cases+i)->coeffits.a),
+                                                  &((test_all_cases+i)->coeffits.b),
+                                                  &((test_all_cases+i)->coeffits.c),
+                                                  &((test_all_cases+i)->exp_ruts_ans.x1),
+                                                  &((test_all_cases+i)->exp_ruts_ans.x2),
+                                                  &((test_all_cases+i)->exp_ruts_ans.ans));
+
+        unit_test(&test_all_cases[i]);
+
+        i++;
+    }
+
 }
 
 void unit_test(UnitTest *cur_test) {
+
+    printf("%lg %lg %lg %lg %lg %d\n",            (cur_test->coeffits.a),
+                                                  (cur_test->coeffits.b),
+                                                  (cur_test->coeffits.c),
+                                                  (cur_test->exp_ruts_ans.x1),
+                                                  (cur_test->exp_ruts_ans.x2),
+                                                  (cur_test->exp_ruts_ans.ans));
+
 
     const coefs coefficients = {.a = cur_test->coeffits.a, .b = cur_test->coeffits.b, .c = cur_test->coeffits.c};
     ruts_ans exp_roots = {.x1 = cur_test->exp_ruts_ans.x1, .x2 = cur_test->exp_ruts_ans.x2, .ans = cur_test->exp_ruts_ans.ans};
