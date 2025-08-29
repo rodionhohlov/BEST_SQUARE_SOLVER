@@ -7,7 +7,7 @@
 
 bool is_flag_correct(char *flag[]) {
 
-    const char *flag_catalog[] = {"-m", "--menu", "-t", "--tests", "-l", "--love"};
+    const char *flag_catalog[] = {"-h", "--help", "-t", "--tests", "-l", "--love"};
 
     for (size_t i = 0; i < (sizeof(flag_catalog) / sizeof(flag_catalog[0])); i++) {
 

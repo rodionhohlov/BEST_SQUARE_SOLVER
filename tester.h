@@ -8,7 +8,7 @@ struct UnitTest {
     struct ruts_ans exp_ruts_ans;
 };
 
-void master_test(UnitTest supertest[], size_t len);
+void master_test(void);
 
 void unit_test(UnitTest *cur_test);
 

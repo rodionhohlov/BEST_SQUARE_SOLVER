@@ -8,10 +8,23 @@
 #include "string_change.h"
 #include "math_operations.h"
 
-void master_test(UnitTest supertest[], size_t len) {
+void master_test(void) {
+    struct UnitTest test_all_cases[] = {
+        {{.a = 1,  .b = 0,  .c = -1}, {.x1 = 1,   .x2 = -1,  .ans = TWO_ROOTS}},
+        {{.a = 0,  .b = 1,  .c = 0},  {.x1 = 0,   .x2 = NAN, .ans = ONE_ROOT}},
+        {{.a = 1,  .b = 0,  .c = 1},  {.x1 = NAN, .x2 = NAN, .ans = NO_ROOTS}},
+        {{.a = 0,  .b = 0,  .c = 1},  {.x1 = NAN, .x2 = NAN, .ans = NO_ROOTS}},
+        {{.a = 0,  .b = 0,  .c = 0},  {.x1 = NAN, .x2 = NAN, .ans = INF_ROOTS}},
+        {{.a = 1,  .b = 0,  .c = 0},  {.x1 = 0,   .x2 = NAN, .ans = ONE_ROOT}},
+        {{.a = -1, .b = 0,  .c = 0},  {.x1 = 0,   .x2 = NAN, .ans = ONE_ROOT}},
+        {{.a = 1,  .b = 2,  .c = 0},  {.x1 = 0,   .x2 = -2,  .ans = TWO_ROOTS}},
+        {{.a = 1,  .b = 2,  .c = -3}, {.x1 = 1,   .x2 = -3,  .ans = TWO_ROOTS}}
+    };
 
-    for (size_t i = 0; i < len; i++)
-        unit_test(&supertest[i]);
+    size_t length = sizeof(test_all_cases) / sizeof(test_all_cases[0]);
+
+    for (size_t i = 0; i < length; i++)
+        unit_test(test_all_cases+i);
 }
 
 void unit_test(UnitTest *cur_test) {
