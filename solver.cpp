@@ -6,24 +6,6 @@
 #include "solver.h"
 #include "math_operations.h"
 
-/**
-    мой assert на проверку, является ли число NAN
-**/
-#define NAN_COEF_ASSERT(ex) if(!(ex)) {printf("файл %s строка %d: коэффициент имеет значение NAN", __FILE__, __LINE__); abort();}
-
-/**
-    @brief Основная функция для решения квадратных уравнений
-
-    При выполнении соответствующих условий вызывает функции для решения различных случает уравнений.
-
-    @param [in] *coefficients - указатель на структуру коэффициентов
-    @param [in] *roots - указатель на структуру с подсчитываемыми корнями
-
-    @return Изменённые зачения для x1 и x2
-
-
-**/
-
 nRoots mega_solver(const coefs *coefficients, ruts_ans *roots) {
 
     assert(roots);
@@ -41,10 +23,6 @@ nRoots mega_solver(const coefs *coefficients, ruts_ans *roots) {
 
     return roots->ans;
 }
-
-/**
-
-**/
 
 void solve_square(const coefs *coefficients, ruts_ans *roots) {
 

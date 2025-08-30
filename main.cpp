@@ -6,15 +6,17 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "math_operations.h"
-#include "user_info.h"
-#include "solver.h"
-#include "output.h"
-#include "string_change.h"
-#include "tester.h"
-#include "POLTORASHKA.h"
 #include "cor_flag.h"
 #include "runnings.h"
+
+/**
+    @brief main - основная функция
+
+    Программа вызывает другие функции, на вход принимает 2 аргумента:
+
+    @param [in] argc - число аргементов командной строки (ожидается 2)
+    @param [in] argv - помимо названия прораммы принимает специальный флаг (без флага идёт обычное выполнение программы)
+**/
 
 int main(int argc, char *argv[]) {
 
