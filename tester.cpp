@@ -10,45 +10,55 @@
 #include "math_operations.h"
 
 void master_test(void) {
-    UnitTest *test_all_cases = (UnitTest*)calloc(9, sizeof(UnitTest));
+    int len = 0;
 
     FILE *reader = fopen("tests.txt", "r");
 
     if (reader == NULL) {
-        printf("ощибка открытия");
+        printf("ощибка открытия файла");
         return;
     }
 
-    char str[200];
+    char str[200] = {};
 
-    int i = 0;
+    while(fgets(str, 200, reader) != NULL) //число строк
+        len++;
 
-    while (fgets(str, 200, reader) != NULL) {
+    UnitTest *test_all_cases = (UnitTest*)calloc(len, sizeof(UnitTest));
+
+    rewind(reader);
+
+    for (int i = 0; i < len; i++) {
+
+        char buf_string_x1[40] = {};
+        char buf_string_x2[40] = {};
+
+        fscanf(reader, "%lg %lg %lg %s %s %d", &((test_all_cases+i)->coeffits.a),
+                                               &((test_all_cases+i)->coeffits.b),
+                                               &((test_all_cases+i)->coeffits.c),
+                                               buf_string_x1,
+                                               buf_string_x2,
+                                               &((test_all_cases+i)->exp_ruts_ans.ans));
+
+        (test_all_cases+i)->exp_ruts_ans.x1 = NAN;
+        (test_all_cases+i)->exp_ruts_ans.x2 = NAN;
+
+        if (strcmp(buf_string_x1, "NAN") != 0)
+            (test_all_cases+i)->exp_ruts_ans.x1 = strtod(buf_string_x1, NULL);
 
 
-        sscanf(str, "%lg %lg %lg %lg %lg %d",     &((test_all_cases+i)->coeffits.a),
-                                                  &((test_all_cases+i)->coeffits.b),
-                                                  &((test_all_cases+i)->coeffits.c),
-                                                  &((test_all_cases+i)->exp_ruts_ans.x1),
-                                                  &((test_all_cases+i)->exp_ruts_ans.x2),
-                                                  &((test_all_cases+i)->exp_ruts_ans.ans));
+        if (strcmp(buf_string_x2, "NAN") != 0)
+            (test_all_cases+i)->exp_ruts_ans.x2 = strtod(buf_string_x2, NULL);
 
         unit_test(&test_all_cases[i]);
-
-        i++;
     }
 
+    free(test_all_cases);
+
+    fclose(reader);
 }
 
 void unit_test(UnitTest *cur_test) {
-
-    printf("%lg %lg %lg %lg %lg %d\n",            (cur_test->coeffits.a),
-                                                  (cur_test->coeffits.b),
-                                                  (cur_test->coeffits.c),
-                                                  (cur_test->exp_ruts_ans.x1),
-                                                  (cur_test->exp_ruts_ans.x2),
-                                                  (cur_test->exp_ruts_ans.ans));
-
 
     const coefs coefficients = {.a = cur_test->coeffits.a, .b = cur_test->coeffits.b, .c = cur_test->coeffits.c};
     ruts_ans exp_roots = {.x1 = cur_test->exp_ruts_ans.x1, .x2 = cur_test->exp_ruts_ans.x2, .ans = cur_test->exp_ruts_ans.ans};
